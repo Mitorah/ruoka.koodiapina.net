@@ -1,10 +1,10 @@
 // Worker B: Minute-by-minute instructions sync
 export default {
   async fetch(request, env, ctx) {
-    // Helper to get Finland time in ISO format
+    // Store real UTC; AdminLogs.vue already converts to Helsinki time for
+    // display, so shifting it here too double-applies the DST offset.
     function getFinlandTimeISO() {
-      const now = new Date();
-      return new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Helsinki' })).toISOString();
+      return new Date().toISOString();
     }
     // Check required environment variables
     if (!env.API_EMAIL || !env.API_PASSWORD || !env.API_KEY) {

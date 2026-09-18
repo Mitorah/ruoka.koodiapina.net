@@ -3,9 +3,10 @@
 
 export default {
   async scheduled(event, env, ctx) {
+    // Store real UTC; AdminLogs.vue already converts to Helsinki time for
+    // display, so shifting it here too double-applies the DST offset.
     function getFinlandTimeISO() {
-      const now = new Date();
-      return new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Helsinki' })).toISOString();
+      return new Date().toISOString();
     }
 
     const timestamp = getFinlandTimeISO();
