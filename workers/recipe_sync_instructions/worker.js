@@ -54,16 +54,17 @@ export default {
           }
         );
         if (!tokenRes.ok) {
+          const errorBody = await tokenRes.text();
           await env.DB.prepare(
-            'INSERT INTO fetch_log (timestamp, count, status, error, details) VALUES (?, ?, ?, ?, ?)' 
+            'INSERT INTO fetch_log (timestamp, count, status, error, details) VALUES (?, ?, ?, ?, ?)'
           ).bind(
             getFinlandTimeISO(),
             0,
             'auth_failed',
             `Status: ${tokenRes.status}`,
-            'POST /accounts:signInWithPassword (authenticating)'
+            `POST /accounts:signInWithPassword (authenticating) - ${errorBody}`
           ).run();
-          return new Response('Auth failed', { status: 401 });
+          return new Response(`Auth failed: ${errorBody}`, { status: 401 });
         }
         tokenData = await tokenRes.json();
         bearer = tokenData.idToken;
