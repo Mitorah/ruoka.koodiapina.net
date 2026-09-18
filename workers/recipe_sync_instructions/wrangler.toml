@@ -7,8 +7,10 @@ binding = "DB"
 database_name = "koodiapina_net_db"
 database_id = "58fd57d4-0c4b-496b-89ff-98be9389c35c"
 
-[triggers]
-crons = ["0 * * * *"] # hourly
+# Cron trigger disabled: ruokaboksi.fi's Firebase API key now has HTTP
+# referrer restrictions (API_KEY_HTTP_REFERRER_BLOCKED), which blocks this
+# server-side sign-in entirely. Re-add `[triggers] crons = [...]` if direct
+# API access is obtained.
 
 [observability.logs]
 enabled = true
