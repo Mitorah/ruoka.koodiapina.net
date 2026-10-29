@@ -2,9 +2,14 @@ name = "recipe-search-populate"
 main = "worker.js"
 compatibility_date = "2024-11-13"
 
-# Runs daily at 3 AM Helsinki time (1 AM UTC)
+# Runs weekly on Mondays at 01:00 UTC. It only indexes recipes whose
+# search_text is still NULL, and new recipes stopped arriving when the
+# ruokaboksi.fi sync was disabled (see workers/recipe_sync_ids/wrangler.toml).
+# If syncing is re-enabled, switch back to daily so new recipes become
+# searchable the next day:
+#   crons = ["0 1 * * *"] # daily at 01:00 UTC
 [triggers]
-crons = ["0 1 * * *"]
+crons = ["0 1 * * 1"]
 
 # Bind to your D1 database
 [[d1_databases]]

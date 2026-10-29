@@ -7,10 +7,19 @@ binding = "DB"
 database_name = "koodiapina_net_db"
 database_id = "58fd57d4-0c4b-496b-89ff-98be9389c35c"
 
-# Cron trigger disabled: ruokaboksi.fi's Firebase API key now has HTTP
-# referrer restrictions (API_KEY_HTTP_REFERRER_BLOCKED), which blocks this
-# server-side sign-in entirely. Re-add `[triggers] crons = [...]` if direct
-# API access is obtained.
+# SYNC DISABLED: ruokaboksi.fi's Firebase API key now has HTTP referrer
+# restrictions (API_KEY_HTTP_REFERRER_BLOCKED), so the server-side sign-in
+# fails with 403 on every run.
+#
+# `crons = []` (not just omitting [triggers]) is required: wrangler leaves a
+# worker's existing Cloudflare schedules untouched when `crons` is missing,
+# and only an explicit empty list removes them on deploy.
+#
+# To re-enable once API access works again, restore the schedule below and
+# deploy (the deploy workflow already deploys this worker):
+#   crons = ["0 * * * *"] # hourly
+[triggers]
+crons = []
 
 [observability.logs]
 enabled = true
