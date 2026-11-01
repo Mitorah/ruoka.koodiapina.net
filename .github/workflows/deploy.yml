@@ -28,8 +28,8 @@ jobs:
       - name: Auto-increment Version
         id: version
         env:
-          # Pass the commit message via env, never inline ${{ }} in the script:
-          # inlined, backticks or $(...) in a message are executed by bash.
+          # Pass the commit message via env, never as an inline expression in
+          # the script: inlined, backticks or $(...) in a message run in bash.
           COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           echo "📦 Determining version from git tags..."
