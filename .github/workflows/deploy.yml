@@ -27,6 +27,10 @@ jobs:
 
       - name: Auto-increment Version
         id: version
+        env:
+          # Pass the commit message via env, never inline ${{ }} in the script:
+          # inlined, backticks or $(...) in a message are executed by bash.
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           echo "📦 Determining version from git tags..."
           
@@ -48,9 +52,7 @@ jobs:
           MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
           PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
           
-          # Check commit message for version bump type
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
-          
+          # Check commit message (COMMIT_MSG from env above) for version bump type
           if [[ "$COMMIT_MSG" == *"[major]"* ]] || [[ "$COMMIT_MSG" == *"BREAKING CHANGE"* ]]; then
             MAJOR=$((MAJOR + 1))
             MINOR=0
