@@ -120,6 +120,8 @@ jobs:
           echo "🚀 Deploying main API worker..."
           cd workers/recipes_api && npx wrangler deploy --var APP_VERSION:${{ steps.version.outputs.version }} --var BUILD_TIME:$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           echo "🚀 Deploying background workers..."
+          # recipe_sync_* are kept deployed with `crons = []` so their schedules
+          # stay removed; see workers/recipe_sync_ids/wrangler.toml to re-enable.
           cd ../recipe_sync_ids && npx wrangler deploy
           cd ../recipe_sync_instructions && npx wrangler deploy
           cd ../recipe_search_populate && npx wrangler deploy
